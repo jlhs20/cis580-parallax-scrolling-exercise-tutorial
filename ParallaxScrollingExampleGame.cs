@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -59,9 +59,22 @@ public class ParallaxScrollingExampleGame : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        _spriteBatch.Begin();
+        float player = MathHelper.Clamp(_player.Position.X, 300, 13600);
+        float offset = 300 - player;
+        Matrix transform = Matrix.CreateTranslation(offset, 0, 0);
+
+        transform = Matrix.CreateTranslation(offset * 0.333f, 0, 0);
+        _spriteBatch.Begin(transformMatrix: transform);
         _spriteBatch.Draw(_background, Vector2.Zero, Color.White);
+        _spriteBatch.End();
+        
+        transform = Matrix.CreateTranslation(offset * 0.667f, 0, 0);
+        _spriteBatch.Begin(transformMatrix: transform);
         _spriteBatch.Draw(_midground, Vector2.Zero, Color.White);
+        _spriteBatch.End();
+        
+        transform = Matrix.CreateTranslation(offset, 0, 0);
+        _spriteBatch.Begin(transformMatrix: transform);
         _spriteBatch.Draw(_foreground, Vector2.Zero, Color.White);
         _player.Draw(gameTime, _spriteBatch);
         _spriteBatch.End();
